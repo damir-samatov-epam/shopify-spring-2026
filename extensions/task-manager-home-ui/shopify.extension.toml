@@ -3,9 +3,9 @@ api_version = "2026-04"
 [[extensions]]
 # Change the merchant-facing name of the extension in locales/en.default.json
 name = "t:name"
-handle = "app-home"
+handle = "task-manager-home-ui"
 type = "ui_extension"
-uid = "83247469-d4a8-2612-c903-5468f6914aaa918849e8"
+uid = "76b11dc8-b399-5f51-352d-2bd18ad9d54a05f12da5"
 
 # Only 1 target can be specified for each app-home extension
 [[extensions.targeting]]

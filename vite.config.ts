@@ -1,5 +1,5 @@
-import { reactRouter } from "@react-router/dev/vite";
-import { defineConfig, type UserConfig } from "vite";
+import {reactRouter} from "@react-router/dev/vite";
+import {defineConfig, type UserConfig} from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 // Related: https://github.com/remix-run/remix/issues/2835#issuecomment-1144102176
@@ -40,6 +40,7 @@ export default defineConfig({
     allowedHosts: [host],
     cors: {
       preflightContinue: true,
+      origin: "*"
     },
     port: Number(process.env.PORT || 3000),
     hmr: hmrConfig,
