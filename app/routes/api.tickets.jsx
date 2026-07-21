@@ -3,16 +3,18 @@ import {authenticate} from "../shopify.server";
 // eslint-disable-next-line no-undef
 const MOCK_API_URL = process.env.MOCK_API_URL || "";
 
-// GET /api/tasks  -> list
+// GET /api/tickets  -> list
 export const loader = async ({request}) => {
   await authenticate.admin(request);
 
   const res = await fetch(MOCK_API_URL);
-  const tasks = await res.json();
-  return {tasks};
+
+  const tickets = await res.json()
+
+  return {tickets: tickets};
 };
 
-// POST /api/tasks -> create
+// POST /api/tickets -> create
 export const action = async ({request}) => {
   await authenticate.admin(request);
 
@@ -29,6 +31,6 @@ export const action = async ({request}) => {
       description: body.description,
     }),
   });
-  const task = await res.json();
-  return {task};
+  const ticket = await res.json();
+  return {ticket};
 };

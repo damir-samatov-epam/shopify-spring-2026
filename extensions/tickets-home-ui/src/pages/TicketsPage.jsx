@@ -1,13 +1,14 @@
 import {useEffect, useRef, useState} from "preact/hooks";
 import {
-  listTasks,
-  createTask,
-  updateTask,
-  deleteTask,
-} from "./../models/tasks.service";
+  listTickets,
+  createTicket,
+  updateTicket,
+  deleteTicket,
+} from "./../models/tickets.service";
+import {forwardRef, useImperativeHandle} from "preact/compat";
 
-export default function TaskManager() {
-  const [tasks, setTasks] = useState([]);
+export default function TicketManager() {
+  const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -22,7 +23,7 @@ export default function TaskManager() {
     setLoading(true);
     setError(null);
     try {
-      setTasks(await listTasks());
+      setTickets(await listTickets());
     } catch (e) {
       setError(e.message);
     } finally {
@@ -39,18 +40,18 @@ export default function TaskManager() {
     formModalRef.current?.showOverlay();
   }
 
-  function openEdit(task) {
-    setEditing(task);
+  function openEdit(ticket) {
+    setEditing(ticket);
     formModalRef.current?.showOverlay();
   }
 
-  function openDelete(task) {
-    setTarget(task);
+  function openDelete(ticket) {
+    setTarget(ticket);
     deleteModalRef.current?.showOverlay();
   }
 
   return (
-    <s-page heading="Task Manager">
+    <s-page heading="Tickets">
       {/* Imperative open — no commandFor (won't resolve from the title bar) */}
       <s-button
         slot="primary-action"
@@ -58,10 +59,10 @@ export default function TaskManager() {
         disabled={loading}
         onClick={openCreate}
       >
-        Create task
+        Create ticket
       </s-button>
 
-      <s-section heading="Tasks">
+      <s-section heading="Tickets">
         {error && (
           <s-banner tone="critical" heading="Something went wrong">
             <s-text>{error}</s-text>
@@ -70,8 +71,8 @@ export default function TaskManager() {
 
         {loading ? (
           <s-stack alignItems="center" justifyContent="center" gap="base">
-            <s-spinner accessibilityLabel="Loading tasks" size="large"/>
-            <s-text tone="subdued">Loading tasks…</s-text>
+            <s-spinner accessibilityLabel="Loading tickets" size="large"/>
+            <s-text tone="subdued">Loading tickets…</s-text>
           </s-stack>
         ) : (
           <>
@@ -83,27 +84,27 @@ export default function TaskManager() {
                 <s-table-header listSlot="inline">Actions</s-table-header>
               </s-table-header-row>
               <s-table-body>
-                {tasks.map((task) => (
-                  <s-table-row key={task.id}>
-                    <s-table-cell>{task.title}</s-table-cell>
-                    <s-table-cell>{task.description}</s-table-cell>
+                {tickets.map((ticket) => (
+                  <s-table-row key={ticket.id}>
+                    <s-table-cell>{ticket.title}</s-table-cell>
+                    <s-table-cell>{ticket.description}</s-table-cell>
                     <s-table-cell>
-                      <s-badge tone={task.status ? "success" : "neutral"}>
-                        {task.status ? "Done" : "Pending"}
+                      <s-badge tone={ticket.status ? "success" : "neutral"}>
+                        {ticket.status ? "Done" : "Pending"}
                       </s-badge>
                     </s-table-cell>
                     <s-table-cell>
                       <s-stack direction="inline" gap="small">
                         <s-button
                           disabled={loading}
-                          onClick={() => openEdit(task)}
+                          onClick={() => openEdit(ticket)}
                         >
                           Edit
                         </s-button>
                         <s-button
                           tone="critical"
                           disabled={loading}
-                          onClick={() => openDelete(task)}
+                          onClick={() => openDelete(ticket)}
                         >
                           Delete
                         </s-button>
@@ -114,23 +115,22 @@ export default function TaskManager() {
               </s-table-body>
             </s-table>
 
-            {tasks.length === 0 && (
-              <s-text>No tasks yet. Create your first one!</s-text>
+            {tickets.length === 0 && (
+              <s-text>No tickets yet. Create your first one!</s-text>
             )}
           </>
         )}
       </s-section>
 
-      <TaskFormModal ref={formModalRef} editing={editing} onSaved={refresh}/>
+      <TicketFormModal ref={formModalRef} editing={editing} onSaved={refresh}/>
       <DeleteModal ref={deleteModalRef} target={target} onDeleted={refresh}/>
     </s-page>
   );
 }
 
-import {forwardRef, useImperativeHandle} from "preact/compat";
 
 /* ---------- Create / Edit modal ---------- */
-const TaskFormModal = forwardRef(({editing, onSaved}, ref) => {
+const TicketFormModal = forwardRef(({editing, onSaved}, ref) => {
   const modalRef = useRef(null);
 
   useImperativeHandle(ref, () => ({
@@ -157,9 +157,9 @@ const TaskFormModal = forwardRef(({editing, onSaved}, ref) => {
     const input = {title, description, status};
     try {
       if (editing) {
-        await updateTask(editing.id, input);
+        await updateTicket(editing.id, input);
       } else {
-        await createTask(input);
+        await createTicket(input);
       }
       await onSaved();
       modalRef.current?.hideOverlay();
@@ -172,9 +172,9 @@ const TaskFormModal = forwardRef(({editing, onSaved}, ref) => {
 
   return (
     <s-modal
-      id="task-modal"
+      id="ticket-modal"
       ref={modalRef}
-      heading={editing ? "Edit task" : "Create task"}
+      heading={editing ? "Edit ticket" : "Create ticket"}
     >
       <s-stack gap="base">
         {error && (
@@ -199,7 +199,7 @@ const TaskFormModal = forwardRef(({editing, onSaved}, ref) => {
         <s-checkbox
           label="Completed"
           name="status"
-          details="Mark this task as done"
+          details="Mark this ticket as done"
           checked={status}
           disabled={saving}
           onChange={(e) => setStatus(e.currentTarget.checked)}
@@ -212,14 +212,14 @@ const TaskFormModal = forwardRef(({editing, onSaved}, ref) => {
         loading={saving}
         onClick={handleSave}
       >
-        {editing ? "Save changes" : "Create task"}
+        {editing ? "Save changes" : "Create ticket"}
       </s-button>
       {/* Cancel is INSIDE the modal, so commandFor resolves fine here */}
       <s-button
         slot="secondary-actions"
         variant="secondary"
         disabled={saving}
-        commandFor="task-modal"
+        commandFor="ticket-modal"
         command="--hide"
       >
         Cancel
@@ -245,7 +245,7 @@ const DeleteModal = forwardRef(({target, onDeleted}, ref) => {
     setDeleting(true);
     setError(null);
     try {
-      await deleteTask(target.id);
+      await deleteTicket(target.id);
       await onDeleted();
       modalRef.current?.hideOverlay();
     } catch (e) {
@@ -256,7 +256,7 @@ const DeleteModal = forwardRef(({target, onDeleted}, ref) => {
   }
 
   return (
-    <s-modal id="delete-modal" ref={modalRef} heading="Delete task?">
+    <s-modal id="delete-modal" ref={modalRef} heading="Delete ticket?">
       <s-stack gap="base">
         {error && (
           <s-banner tone="critical">
@@ -274,7 +274,7 @@ const DeleteModal = forwardRef(({target, onDeleted}, ref) => {
         loading={deleting}
         onClick={handleDelete}
       >
-        Delete task
+        Delete ticket
       </s-button>
       <s-button
         slot="secondary-actions"

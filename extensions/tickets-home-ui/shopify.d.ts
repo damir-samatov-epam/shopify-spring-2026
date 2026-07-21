@@ -13,7 +13,7 @@ declare module './src/pages/HomePage.jsx' {
 }
 
 //@ts-ignore
-declare module './src/pages/TasksPage.jsx' {
+declare module './src/pages/TicketsPage.jsx' {
   const shopify: import('@shopify/ui-extensions/admin.app.home.render').Api;
   const globalThis: { shopify: typeof shopify };
 }
@@ -43,7 +43,7 @@ declare module './src/models/faqs.js' {
 }
 
 //@ts-ignore
-declare module './src/models/tasks.service.js' {
+declare module './src/models/tickets.service.js' {
   const shopify: import('@shopify/ui-extensions/admin.app.home.render').Api;
   const globalThis: { shopify: typeof shopify };
 }

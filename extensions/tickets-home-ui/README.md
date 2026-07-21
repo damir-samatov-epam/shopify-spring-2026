@@ -1,4 +1,4 @@
-# task-manager-home-ui
+# ticket-manager-home-ui
 
 A simple app home extension that demonstrates:
 - Basic UI with Shopify's Remote DOM components

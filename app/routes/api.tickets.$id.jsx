@@ -17,10 +17,10 @@ export const action = async ({request, params}) => {
         ...body
       }),
     });
-    const task = await res.json();
+    const ticket = await res.json();
 
-    console.dir({task});
-    return {task};
+    console.dir({ticket});
+    return {ticket};
   }
 
   if (request.method === "DELETE") {
