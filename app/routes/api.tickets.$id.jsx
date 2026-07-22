@@ -3,6 +3,15 @@ import {authenticate} from "../shopify.server";
 // eslint-disable-next-line no-undef
 const MOCK_API_URL = process.env.MOCK_API_URL || "";
 
+export const loader = async ({request, params}) => {
+  await authenticate.admin(request);
+
+  const {id} = params;
+  const res = await fetch(`${MOCK_API_URL}/${id}`);
+  const ticket = await res.json();
+  return {ticket};
+};
+
 export const action = async ({request, params}) => {
   await authenticate.admin(request);
 

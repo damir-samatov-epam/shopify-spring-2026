@@ -3,6 +3,8 @@ import {LocationProvider, ErrorBoundary, Router, Route} from 'preact-iso';
 
 import HomePage from './pages/HomePage.jsx';
 import TicketsPage from './pages/TicketsPage.jsx';
+import TicketCreatePage from './pages/TicketCreatePage.jsx';
+import TicketDetailPage from './pages/TicketDetailPage.jsx';
 import SettingsPage from './pages/SettingsPage.jsx';
 import NotFoundPage from './pages/NotFoundPage.jsx';
 
@@ -21,6 +23,8 @@ function App() {
         <Router>
           <Route path="/" component={HomePage}/>
           <Route path="/tickets" component={TicketsPage}/>
+          <Route path="/tickets/create" component={TicketCreatePage}/>
+          <Route path="/tickets/:id" component={TicketDetailPage}/>
           <Route path="/settings" component={SettingsPage}/>
           <Route default component={NotFoundPage}/>
         </Router>

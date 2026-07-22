@@ -1,0 +1,19 @@
+{
+  "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/intent.json",
+  "inputSchema": {
+    "$ref": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/application/ticket.json",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "Short summary/title of the ticket (1-200 characters).",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "description": {
+        "type": "string",
+        "description": "Detailed description of the issue or task the ticket tracks."
+      }
+    }
+  }
+}

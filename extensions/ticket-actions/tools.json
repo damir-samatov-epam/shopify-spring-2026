@@ -1,0 +1,37 @@
+[
+  {
+    "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/tool.json",
+    "name": "save_ticket",
+    "description": "Create the new ticket, or save changes to the ticket currently open in the extension. On a create intent this creates a ticket; on an edit intent this updates the open ticket.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Ticket title/summary (1-200 characters).",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the ticket."
+        },
+        "status": {
+          "type": "string",
+          "description": "Workflow status of the ticket. Only applies when editing an existing ticket.",
+          "enum": ["open", "in_progress", "closed"]
+        }
+      },
+      "required": ["title"]
+    }
+  },
+  {
+    "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/tool.json",
+    "name": "delete_ticket",
+    "description": "Delete the ticket currently open in the extension. Only available on an edit intent, where a ticket is already loaded.",
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    }
+  }
+]

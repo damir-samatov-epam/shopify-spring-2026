@@ -1,5 +1,11 @@
 const BASE = "/api/tickets";
 
+export async function getTicket(id) {
+  const res = await fetch(`${BASE}/${id}`);
+  if (!res.ok) throw new Error(`Failed to load ticket (${res.status})`);
+  return (await res.json()).ticket;
+}
+
 export async function listTickets() {
   const res = await fetch(BASE);
   if (!res.ok) throw new Error(`Failed to load tickets (${res.status})`);

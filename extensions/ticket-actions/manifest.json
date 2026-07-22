@@ -1,0 +1,14 @@
+{
+  "admin.app.intent.render": {
+    "tools": "tools.json",
+    "instructions": "instructions.md",
+    "intents": [
+      {
+        "schema": "ticket-create-schema.json"
+      },
+      {
+        "schema": "ticket-edit-schema.json"
+      }
+    ]
+  }
+}

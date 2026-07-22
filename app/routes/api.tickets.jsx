@@ -29,6 +29,7 @@ export const action = async ({request}) => {
     body: JSON.stringify({
       title: body.title,
       description: body.description,
+      status: body.status ?? "open",
     }),
   });
   const ticket = await res.json();

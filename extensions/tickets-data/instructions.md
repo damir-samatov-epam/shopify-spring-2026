@@ -2,17 +2,14 @@
 
 Use these tools when the merchant asks about:
 
-- Data or records from apps
+- Tickets, todos, or tasks
 
-## Important Guidelines
+Use `search_tickets` to find and read tickets.
 
-- Use the `query` parameter to pass the merchant's search terms
-- Results are paginated - use `first` and `after` parameters for large result sets
+To change tickets, use the Ticket Actions extension:
 
-## Common Workflows
-
-### Searching for Data
-
-1. Understand what the merchant is looking for
-2. Use the search tool with their query
-3. Present the results with relevant details (title, type, URL if available)
+- Create a ticket → `application/ticket` **create** intent.
+- Edit a ticket → `application/ticket` **edit** intent (pass the ticket `id` as the
+  intent value).
+- Delete a ticket → the `delete_ticket` tool, available while a ticket is open in the
+  edit intent.

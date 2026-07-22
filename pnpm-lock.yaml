@@ -106,7 +106,7 @@ importers:
         specifier: ^6.3.6
         version: 6.4.3(@types/node@22.20.1)(jiti@2.7.0)(yaml@2.9.0)
 
-  extensions/ticket-action-sidekick:
+  extensions/ticket-actions:
     dependencies:
       '@preact/signals':
         specifier: ^2.3.x
@@ -118,7 +118,13 @@ importers:
         specifier: ^10.10.x
         version: 10.29.7(preact-render-to-string@6.7.0)
 
-  extensions/ticket-manager-home-ui:
+  extensions/tickets-data:
+    dependencies:
+      '@shopify/ui-extensions':
+        specifier: ~2025.10.12
+        version: 2025.10.16(@preact/signals@2.9.4(preact@10.29.7))(preact@10.29.7)
+
+  extensions/tickets-home-ui:
     dependencies:
       '@shopify/ui-extensions':
         specifier: rc
@@ -129,12 +135,6 @@ importers:
       preact-iso:
         specifier: ^2.9.1
         version: 2.12.0(preact-render-to-string@6.7.0)(preact@10.29.7)
-
-  extensions/tickets-data:
-    dependencies:
-      '@shopify/ui-extensions':
-        specifier: ~2025.10.12
-        version: 2025.10.16(@preact/signals@2.9.4(preact@10.29.7))(preact@10.29.7)
 
 packages:
 
@@ -3176,7 +3176,7 @@ packages:
     resolution: {integrity: sha512-O9gl3zCl5h5blw1KGUzQKhA5oUXSl8rwUIM5o0S3nCXMliSvy5Dzx7/DJcI+SwgICv+IneSZwhBh1oSyEHA71A==}
     engines: {node: '>=0.6'}
 
-  queue-microticket@1.2.3:
+  queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
   range-parser@1.2.1:
@@ -7244,7 +7244,7 @@ snapshots:
       es-define-property: 1.0.1
       side-channel: 1.1.1
 
-  queue-microticket@1.2.3: {}
+  queue-microtask@1.2.3: {}
 
   range-parser@1.2.1: {}
 
@@ -7381,7 +7381,7 @@ snapshots:
 
   run-parallel@1.2.0:
     dependencies:
-      queue-microticket: 1.2.3
+      queue-microtask: 1.2.3
 
   rxjs@7.8.2:
     dependencies:

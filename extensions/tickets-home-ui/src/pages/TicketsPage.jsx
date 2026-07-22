@@ -1,22 +1,16 @@
 import {useEffect, useRef, useState} from "preact/hooks";
-import {
-  listTickets,
-  createTicket,
-  updateTicket,
-  deleteTicket,
-} from "./../models/tickets.service";
+import {useLocation} from "preact-iso";
+import {listTickets, deleteTicket} from "./../models/tickets.service";
 import {forwardRef, useImperativeHandle} from "preact/compat";
 
 export default function TicketManager() {
+  const {route} = useLocation();
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [editing, setEditing] = useState(null);
   const [target, setTarget] = useState(null);
 
-  // Ref to the form modal so we can open it imperatively
-  const formModalRef = useRef(null);
   const deleteModalRef = useRef(null);
 
   async function refresh() {
@@ -35,16 +29,6 @@ export default function TicketManager() {
     refresh();
   }, []);
 
-  function openCreate() {
-    setEditing(null);
-    formModalRef.current?.showOverlay();
-  }
-
-  function openEdit(ticket) {
-    setEditing(ticket);
-    formModalRef.current?.showOverlay();
-  }
-
   function openDelete(ticket) {
     setTarget(ticket);
     deleteModalRef.current?.showOverlay();
@@ -52,12 +36,11 @@ export default function TicketManager() {
 
   return (
     <s-page heading="Tickets">
-      {/* Imperative open — no commandFor (won't resolve from the title bar) */}
       <s-button
         slot="primary-action"
         variant="primary"
         disabled={loading}
-        onClick={openCreate}
+        onClick={() => route("/tickets/create")}
       >
         Create ticket
       </s-button>
@@ -89,15 +72,15 @@ export default function TicketManager() {
                     <s-table-cell>{ticket.title}</s-table-cell>
                     <s-table-cell>{ticket.description}</s-table-cell>
                     <s-table-cell>
-                      <s-badge tone={ticket.status ? "success" : "neutral"}>
-                        {ticket.status ? "Done" : "Pending"}
+                      <s-badge tone={ticket.status === "closed" ? "success" : ticket.status === "in_progress" ? "info" : "neutral"}>
+                        {ticket.status === "closed" ? "Closed" : ticket.status === "in_progress" ? "In progress" : "Open"}
                       </s-badge>
                     </s-table-cell>
                     <s-table-cell>
                       <s-stack direction="inline" gap="small">
                         <s-button
                           disabled={loading}
-                          onClick={() => openEdit(ticket)}
+                          onClick={() => route(`/tickets/${ticket.id}`)}
                         >
                           Edit
                         </s-button>
@@ -116,117 +99,21 @@ export default function TicketManager() {
             </s-table>
 
             {tickets.length === 0 && (
-              <s-text>No tickets yet. Create your first one!</s-text>
+              <s-stack alignItems="center" justifyContent="center" gap="base" style="padding: 48px 0;">
+                <s-text variant="headingMd">No tickets yet</s-text>
+                <s-text tone="subdued">Create your first ticket to get started.</s-text>
+                <s-button variant="primary" onClick={() => route("/tickets/create")}>Create ticket</s-button>
+              </s-stack>
             )}
           </>
         )}
       </s-section>
 
-      <TicketFormModal ref={formModalRef} editing={editing} onSaved={refresh}/>
       <DeleteModal ref={deleteModalRef} target={target} onDeleted={refresh}/>
     </s-page>
   );
 }
 
-
-/* ---------- Create / Edit modal ---------- */
-const TicketFormModal = forwardRef(({editing, onSaved}, ref) => {
-  const modalRef = useRef(null);
-
-  useImperativeHandle(ref, () => ({
-    showOverlay: () => modalRef.current?.showOverlay(),
-    hideOverlay: () => modalRef.current?.hideOverlay(),
-  }));
-
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [status, setStatus] = useState(false);
-  const [saving, setSaving] = useState(false);
-  const [error, setError] = useState(null);
-
-  useEffect(() => {
-    setTitle(editing?.title ?? "");
-    setDescription(editing?.description ?? "");
-    setStatus(editing?.status ?? false);
-    setError(null);
-  }, [editing]);
-
-  async function handleSave() {
-    setSaving(true);
-    setError(null);
-    const input = {title, description, status};
-    try {
-      if (editing) {
-        await updateTicket(editing.id, input);
-      } else {
-        await createTicket(input);
-      }
-      await onSaved();
-      modalRef.current?.hideOverlay();
-    } catch (e) {
-      setError(e.message);
-    } finally {
-      setSaving(false);
-    }
-  }
-
-  return (
-    <s-modal
-      id="ticket-modal"
-      ref={modalRef}
-      heading={editing ? "Edit ticket" : "Create ticket"}
-    >
-      <s-stack gap="base">
-        {error && (
-          <s-banner tone="critical">
-            <s-text>{error}</s-text>
-          </s-banner>
-        )}
-        <s-text-field
-          label="Title"
-          name="title"
-          value={title}
-          disabled={saving}
-          onInput={(e) => setTitle(e.currentTarget.value)}
-        />
-        <s-text-area
-          label="Description"
-          name="description"
-          value={description}
-          disabled={saving}
-          onInput={(e) => setDescription(e.currentTarget.value)}
-        />
-        <s-checkbox
-          label="Completed"
-          name="status"
-          details="Mark this ticket as done"
-          checked={status}
-          disabled={saving}
-          onChange={(e) => setStatus(e.currentTarget.checked)}
-        />
-      </s-stack>
-
-      <s-button
-        slot="primary-action"
-        variant="primary"
-        loading={saving}
-        onClick={handleSave}
-      >
-        {editing ? "Save changes" : "Create ticket"}
-      </s-button>
-      {/* Cancel is INSIDE the modal, so commandFor resolves fine here */}
-      <s-button
-        slot="secondary-actions"
-        variant="secondary"
-        disabled={saving}
-        commandFor="ticket-modal"
-        command="--hide"
-      >
-        Cancel
-      </s-button>
-    </s-modal>
-  );
-});
 
 /* ---------- Delete confirmation modal ---------- */
 const DeleteModal = forwardRef(({target, onDeleted}, ref) => {
