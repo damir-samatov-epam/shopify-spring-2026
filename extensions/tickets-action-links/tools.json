@@ -1,0 +1,56 @@
+[
+  {
+    "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/tool.json",
+    "name": "create_ticket",
+    "description": "Create a ticket",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Ticket title"
+        },
+        "description": {
+          "type": "string",
+          "description": "Ticket detailed description"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of a ticket",
+          "enum": [
+            "open",
+            "in_progress",
+            "closed"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/tool.json",
+    "name": "edit_ticket",
+    "description": "Update the content of the existing ticket",
+    "inputSchema": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "Ticket title"
+        },
+        "description": {
+          "type": "string",
+          "description": "Ticket detailed description"
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of a ticket",
+          "enum": [
+            "open",
+            "in_progress",
+            "closed"
+          ]
+        }
+      }
+    }
+  }
+]

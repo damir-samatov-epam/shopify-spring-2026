@@ -51,7 +51,7 @@ name = "Description"
 type = "multi_line_text_field"
 
 [sidekick]
-extensions_summary = "Search, create, edit, and delete tickets with titles, descriptions, and completion status"
+extensions_summary = "Search, create, edit tickets with titles, descriptions, and completion status"
 
 # in [app] / auth section — allow the Sidekick sandbox origin
 # Add https://extensions.shopifycdn.com to your CORS allowlist

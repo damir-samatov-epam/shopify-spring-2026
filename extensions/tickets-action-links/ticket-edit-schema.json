@@ -1,0 +1,44 @@
+{
+  "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/intent.json",
+  "value": {
+    "type": "string",
+    "description": "The ID of the ticket to edit.",
+    "mapTo": "param",
+    "fieldName": "id"
+  },
+  "inputSchema": {
+    "$ref": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/application/ticket.json",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string",
+        "description": "Updated title/summary of the ticket (1-200 characters).",
+        "minLength": 1,
+        "maxLength": 200
+      },
+      "description": {
+        "type": "string",
+        "description": "Updated detailed description of the ticket."
+      },
+      "status": {
+        "type": "string",
+        "description": "Status of the ticket.",
+        "enum": [
+          "open",
+          "in_progress",
+          "closed"
+        ]
+      }
+    }
+  },
+  "outputSchema": {
+    "$ref": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/application/ticket.json",
+    "type": "object",
+    "properties": {
+      "result": {
+        "type": "string",
+        "description": "Result of the merchant interaction"
+      }
+    }
+  }
+}

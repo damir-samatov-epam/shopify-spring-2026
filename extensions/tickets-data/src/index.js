@@ -1,6 +1,15 @@
 export default () => {
   shopify.tools.register('search_tickets', async () => {
     const response = await fetch(`/api/tickets`);
-    return response.json();
+    const data = await response.json();
+
+    return {
+      results: data.tickets.map(ticket => ({
+        ...ticket,
+        uri: `gid://application/ticket/${ticket.id}`,
+        mimeType: 'application/ticket',
+        type: "resource_link",
+      }))
+    }
   });
 }

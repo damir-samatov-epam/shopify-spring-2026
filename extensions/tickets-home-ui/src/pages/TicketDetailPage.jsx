@@ -16,6 +16,7 @@ export default function TicketDetailPage({id}) {
   const [saveError, setSaveError] = useState(null);
 
   useEffect(() => {
+    let cleanup;
     setLoading(true);
     setLoadError(null);
     getTicket(id)
@@ -23,10 +24,28 @@ export default function TicketDetailPage({id}) {
         setTicket(t);
         setTitle(t.title);
         setDescription(t.description);
-        setStatus(t.status === true ? "closed" : t.status === false ? "open" : t.status ?? "open");
+        setStatus(t.status);
       })
       .catch((e) => setLoadError(e.message))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        cleanup = shopify.tools.register('edit_ticket', async (input) => {
+          setTicket((prev) => ({...prev, ...input}));
+          setTitle(input.title);
+          setDescription(input.description);
+          setStatus(input.status);
+          return {
+            ok: true,
+            id,
+            staged: input,
+            note: 'Changes staged in the form. Awaiting merchant Save.',
+          };
+        });
+        setLoading(false);
+      });
+
+    return () => {
+      console.log("cleanup", cleanup, cleanup?.())
+    }
   }, [id]);
 
   async function handleSave() {
@@ -34,6 +53,13 @@ export default function TicketDetailPage({id}) {
     setSaveError(null);
     try {
       await updateTicket(id, {title, description, status});
+      if (shopify.intents.request?.value) {
+        await shopify.intents.response?.ok({
+          id, action: 'edit', data: {
+            result: "Successfully updated the ticket",
+          }
+        });
+      }
       route("/tickets");
     } catch (e) {
       setSaveError(e.message);
@@ -42,12 +68,19 @@ export default function TicketDetailPage({id}) {
     }
   }
 
+  async function handleCancel() {
+    if (shopify.intents.request?.value) {
+      await shopify.intents.response?.closed();
+    }
+    route("/tickets");
+  }
+
   if (loading) {
     return (
       <s-page heading="Edit ticket">
         <s-stack alignItems="center" justifyContent="center" gap="base">
           <s-spinner accessibilityLabel="Loading ticket" size="large"/>
-          <s-text tone="subdued">Loading ticket…</s-text>
+          <s-text tone="neutral">Loading ticket…</s-text>
         </s-stack>
       </s-page>
     );
@@ -65,23 +98,6 @@ export default function TicketDetailPage({id}) {
 
   return (
     <s-page heading={`Edit ticket: ${ticket?.title}`}>
-      <s-button
-        slot="primary-action"
-        variant="primary"
-        loading={saving}
-        onClick={handleSave}
-      >
-        Save changes
-      </s-button>
-      <s-button
-        slot="secondary-actions"
-        variant="secondary"
-        disabled={saving}
-        onClick={() => route("/tickets")}
-      >
-        Cancel
-      </s-button>
-
       <s-section>
         {saveError && (
           <s-banner tone="critical">
@@ -114,6 +130,22 @@ export default function TicketDetailPage({id}) {
             <s-option value="in_progress">In progress</s-option>
             <s-option value="closed">Closed</s-option>
           </s-select>
+          <s-stack direction="inline" gap="base" justifyContent="end">
+            <s-button
+              variant="primary"
+              loading={saving}
+              onClick={handleSave}
+            >
+              Update
+            </s-button>
+            <s-button
+              variant="secondary"
+              disabled={saving}
+              onClick={handleCancel}
+            >
+              Cancel
+            </s-button>
+          </s-stack>
         </s-stack>
       </s-section>
     </s-page>
