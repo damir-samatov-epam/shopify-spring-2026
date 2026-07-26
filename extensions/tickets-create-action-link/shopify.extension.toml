@@ -1,20 +1,15 @@
 [[extensions]]
-name = "Tickets action links"
-description = "Create/edit tickets"
-handle = "ticket-action-links"
+name = "Create tickets action link"
+description = "Create tickets"
+handle = "ticket-create-action-link"
+uid = "d03afec7-e4b4-ad9a-6a3a-e3f2918b1bca1a11a027"
 type = "admin_link"
-uid = "a8b9c0d1-e2f3-4a5b-6c7d-8e9f0a1b2c3d4e5f6a7b"
 
 [[extensions.targeting]]
 target = "admin.app.intent.link"
 url = "/tickets/create"
 tools = "./tools.json"
 instructions = "./instructions.md"
-
-[[extensions.targeting.intents]]
-type = "application/ticket"
-action = "edit"
-schema = "./ticket-edit-schema.json"
 
 [[extensions.targeting.intents]]
 type = "application/ticket"

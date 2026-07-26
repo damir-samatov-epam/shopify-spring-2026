@@ -8,9 +8,6 @@ to the ticket form in the app.
   ticket's `id` as the intent `value` when the merchant wants to change an
   existing ticket's title, description, or status.
 
-- **Create a ticket** — invoke the `application/ticket` **create** intent with the
-  ticket's `id` as the `create` when the merchant wants to create a tciekt
-
 ## Guidelines
 
 - Confirm the details with the merchant before triggering the intent.

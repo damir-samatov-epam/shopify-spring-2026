@@ -5,10 +5,12 @@ export default () => {
 
     return {
       results: data.tickets.map(ticket => ({
-        ...ticket,
+        name: ticket.title,
         uri: `gid://application/ticket/${ticket.id}`,
+        url: `app://tickets/${ticket.id}`,
         mimeType: 'application/ticket',
         type: "resource_link",
+        _meta: ticket
       }))
     }
   });

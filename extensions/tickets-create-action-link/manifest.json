@@ -4,10 +4,6 @@
     "instructions": "instructions.md",
     "intents": [
       {
-        "schema": "ticket-edit-schema.json"
-      },
-      {
-        "url": "/tickets/create",
         "schema": "ticket-create-schema.json"
       }
     ]

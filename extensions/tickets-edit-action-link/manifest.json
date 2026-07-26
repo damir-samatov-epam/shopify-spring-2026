@@ -1,0 +1,11 @@
+{
+  "admin.app.intent.link": {
+    "url": "/tickets",
+    "instructions": "instructions.md",
+    "intents": [
+      {
+        "schema": "ticket-edit-schema.json"
+      }
+    ]
+  }
+}

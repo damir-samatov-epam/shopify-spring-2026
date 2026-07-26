@@ -11,47 +11,80 @@ automatically_update_urls_on_dev = true
 [webhooks]
 api_version = "2026-04"
 
-  [[webhooks.subscriptions]]
-  uri = "/webhooks/app/scopes_update"
-  topics = [ "app/scopes_update" ]
+[[webhooks.subscriptions]]
+uri = "/webhooks/app/scopes_update"
+topics = ["app/scopes_update"]
 
-  [[webhooks.subscriptions]]
-  uri = "/webhooks/app/uninstalled"
-  topics = [ "app/uninstalled" ]
+[[webhooks.subscriptions]]
+uri = "/webhooks/app/uninstalled"
+topics = ["app/uninstalled"]
 
 [access_scopes]
-# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
 scopes = "write_products"
 
 [auth]
-redirect_urls = [ "https://example.com/api/auth" ]
+redirect_urls = ["https://example.com/api/auth"]
 
-[product.metafields.app.demo_info]
-type = "single_line_text_field"
-name = "Demo Source Info"
-description = "Tracks products created by the Shopify app template for development"
-
-  [product.metafields.app.demo_info.access]
-  admin = "merchant_read_write"
-
-[metaobjects.app.example]
-name = "Example"
-description = "An example metaobject definition created by this template"
-
-  [metaobjects.app.example.access]
-  admin = "merchant_read_write"
-
-[metaobjects.app.example.fields.title]
-name = "Title"
-type = "single_line_text_field"
-required = true
-
-[metaobjects.app.example.fields.description]
-name = "Description"
-type = "multi_line_text_field"
-
+# SIDEKICK
 [sidekick]
 extensions_summary = "Search, create, edit tickets with titles, descriptions, and completion status"
 
-# in [app] / auth section — allow the Sidekick sandbox origin
-# Add https://extensions.shopifycdn.com to your CORS allowlist
+# NEXT GEN EVENTS
+[events]
+api_version = "unstable"
+
+# PRODUCT PRICE UPDATE ENENT
+[[events.subscription]]
+handle = "update_product_price_event"
+
+topic = "Product"
+actions = ["update"]
+
+triggers = [
+  "product.variants.price",
+  "product.variants.compareAtPrice"
+]
+
+uri = "/events/product/price"
+
+query = """
+  query price_change($productId: ID!, $variantsId: ID!){
+    productVariant(id: $variantsId) {
+      id
+      price
+      compareAtPrice
+    }
+    product(id: $productId) {
+      id
+      title
+      status
+    }
+  }
+  """
+
+query_filter = "product.status:'ACTIVE' AND productVariant.price:>100"
+
+# PRODUCT TITLE UPDATE ENENT
+[[events.subscription]]
+handle = "update_product_title_event"
+
+topic = "Product"
+actions = ["update"]
+
+triggers = [
+  "product.title",
+]
+
+uri = "/events/product/title"
+
+query = """
+  query title_change($productId: ID!){
+    product(id: $productId) {
+      id
+      title
+      status
+    }
+  }
+  """
+
+query_filter = "product.status:'ACTIVE'"

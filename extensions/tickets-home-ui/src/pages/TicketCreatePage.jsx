@@ -13,9 +13,9 @@ export default function TicketCreatePage() {
 
   useEffect(() => {
     const cleanup = shopify.tools.register('create_ticket', async (input) => {
-      setTitle(input.title);
-      setDescription(input.description);
-      setStatus(input.status);
+      setTitle(input.title || "");
+      setDescription(input.description || "");
+      setStatus(input.status || "open");
       return {
         ok: true,
         staged: input,
