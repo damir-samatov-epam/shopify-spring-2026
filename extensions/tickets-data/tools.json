@@ -1,0 +1,11 @@
+[
+  {
+    "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/tool.json",
+    "name": "search_tickets",
+    "description": "Search tickets",
+    "inputSchema": {
+      "type": "object",
+      "properties": {}
+    }
+  }
+]

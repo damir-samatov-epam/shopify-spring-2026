@@ -1,0 +1,34 @@
+import {render} from 'preact';
+import {LocationProvider, ErrorBoundary, Router, Route} from 'preact-iso';
+
+import HomePage from './pages/HomePage.jsx';
+import TicketsPage from './pages/TicketsPage.jsx';
+import TicketCreatePage from './pages/TicketCreatePage.jsx';
+import TicketDetailPage from './pages/TicketDetailPage.jsx';
+import SettingsPage from './pages/SettingsPage.jsx';
+import NotFoundPage from './pages/NotFoundPage.jsx';
+
+export default async () => {
+  render(<App/>, document.body);
+};
+
+function App() {
+  return (
+    <LocationProvider>
+      <s-app-nav>
+        <s-link href="/tickets">Tickets</s-link>
+        <s-link href="/settings">Settings</s-link>
+      </s-app-nav>
+      <ErrorBoundary>
+        <Router>
+          <Route path="/" component={HomePage}/>
+          <Route path="/tickets" component={TicketsPage}/>
+          <Route path="/tickets/create" component={TicketCreatePage}/>
+          <Route path="/tickets/:id" component={TicketDetailPage}/>
+          <Route path="/settings" component={SettingsPage}/>
+          <Route default component={NotFoundPage}/>
+        </Router>
+      </ErrorBoundary>
+    </LocationProvider>
+  );
+}

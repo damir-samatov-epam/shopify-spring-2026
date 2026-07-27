@@ -1,0 +1,14 @@
+api_version = "2026-10"
+
+[[extensions]]
+name = "Ticket Data Tools"
+description = "Tools for working with tickets, searching ticekts"
+handle = "ticket-data-tools"
+uid = "2b1da01f-acc5-c42b-d710-7ee8a86f0517097aac25"
+type = "ui_extension"
+
+[[extensions.targeting]]
+module = "./src/index.js"
+target = "admin.app.tools.data"
+tools = "./tools.json"
+instructions = "./instructions.md"
