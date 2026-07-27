@@ -1,10 +1,12 @@
 import {authenticate} from "../shopify.server";
+import {onTicketCreated} from "../app-events.service";
+import type {ActionFunctionArgs, LoaderFunctionArgs} from "react-router";
 
 // eslint-disable-next-line no-undef
 const MOCK_API_URL = process.env.MOCK_API_URL || "";
 
 // GET /api/tickets  -> list
-export const loader = async ({request}) => {
+export const loader = async ({request}: LoaderFunctionArgs) => {
   await authenticate.admin(request);
 
   const res = await fetch(MOCK_API_URL);
@@ -15,7 +17,7 @@ export const loader = async ({request}) => {
 };
 
 // POST /api/tickets -> create
-export const action = async ({request}) => {
+export const action = async ({request}: ActionFunctionArgs) => {
   await authenticate.admin(request);
 
   if (request.method !== "POST") {
@@ -33,5 +35,8 @@ export const action = async ({request}) => {
     }),
   });
   const ticket = await res.json();
+
+  onTicketCreated(ticket);
+
   return {ticket};
 };
