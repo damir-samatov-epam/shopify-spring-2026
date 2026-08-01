@@ -44,6 +44,14 @@ export default function TicketManager() {
       >
         Create ticket
       </s-button>
+      <s-button
+        slot="secondary-actions"
+        variant="secondary"
+        disabled={loading}
+        onClick={refresh}
+      >
+        Refresh
+      </s-button>
 
       <s-section heading="Tickets">
         {error && (
@@ -72,7 +80,8 @@ export default function TicketManager() {
                     <s-table-cell>{ticket.title}</s-table-cell>
                     <s-table-cell>{ticket.description}</s-table-cell>
                     <s-table-cell>
-                      <s-badge tone={ticket.status === "closed" ? "success" : ticket.status === "in_progress" ? "info" : "neutral"}>
+                      <s-badge
+                        tone={ticket.status === "closed" ? "success" : ticket.status === "in_progress" ? "info" : "neutral"}>
                         {ticket.status === "closed" ? "Closed" : ticket.status === "in_progress" ? "In progress" : "Open"}
                       </s-badge>
                     </s-table-cell>

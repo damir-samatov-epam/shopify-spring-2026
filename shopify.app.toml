@@ -20,7 +20,7 @@ uri = "/webhooks/app/uninstalled"
 topics = ["app/uninstalled"]
 
 [access_scopes]
-scopes = "write_products"
+scopes = "write_products,write_orders"
 
 [auth]
 redirect_urls = ["https://example.com/api/auth"]
@@ -33,7 +33,7 @@ extensions_summary = "Search, create, edit tickets with titles, descriptions, an
 [events]
 api_version = "unstable"
 
-# PRODUCT PRICE UPDATE ENENT
+# PRODUCT PRICE UPDATE EVENT
 [[events.subscription]]
 handle = "update_product_price_event"
 
@@ -62,9 +62,9 @@ query = """
   }
   """
 
-query_filter = "product.status:'ACTIVE' AND productVariant.price:>100"
+query_filter = "product.status:'ACTIVE' AND productVariant.price:>50"
 
-# PRODUCT TITLE UPDATE ENENT
+# PRODUCT TITLE UPDATE EVENT
 [[events.subscription]]
 handle = "update_product_title_event"
 
