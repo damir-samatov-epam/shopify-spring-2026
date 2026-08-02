@@ -54,8 +54,7 @@ topic = "Product"
 actions = ["update"]
 
 triggers = [
-  "product.variants.price",
-  "product.variants.compareAtPrice"
+  "product.variants.price"
 ]
 
 uri = "/events/product/price"
@@ -65,7 +64,6 @@ query = """
     productVariant(id: $variantsId) {
       id
       price
-      compareAtPrice
     }
     product(id: $productId) {
       id

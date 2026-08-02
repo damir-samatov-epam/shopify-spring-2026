@@ -1,0 +1,22 @@
+query {
+  products {
+    edges {
+      node {
+        id
+        handle
+        title
+        productType
+        variants {
+          edges {
+            node {
+              id
+              sku
+              displayName
+              price
+            }
+          }
+        }
+      }
+    }
+  }
+}
