@@ -8,7 +8,8 @@ set -e
   echo ""
 
   # Create CSV header
-  echo "product_handle,product_title,product_type,variant_sku,variant_name,variant_price" > data/products-variants.csv
+  touch products-variants.csv
+  echo "product_handle,product_title,product_type,variant_sku,variant_name,variant_price" > products-variants.csv
 
   # The bulk operation with the--watch flag waits for completion and outputs the JSONL
   # Since variants always appear after their parent product, we can use a simple stateful approach
@@ -32,14 +33,14 @@ set -e
         --arg title "$current_product_title" \
         --arg type "$current_product_type" \
         '[$handle, $title, $type, .sku, .displayName, .price] | @csv' \
-        >> data/products-variants.csv
+        >> products-variants.csv
     fi
   done
 
   # Count rows (excluding header)
-  ROW_COUNT=$(($(wc -l < data/products-variants.csv) - 1))
+  ROW_COUNT=$(($(wc -l < products-variants.csv) - 1))
 
   echo ""
   echo "Export complete!"
-  echo "Exported $ROW_COUNT product variants to data/products-variants.csv"
+  echo "Exported $ROW_COUNT product variants to products-variants.csv"
 )
