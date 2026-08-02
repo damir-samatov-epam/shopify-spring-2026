@@ -2,27 +2,6 @@
   "$schema": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/intent.json",
   "inputSchema": {
     "$ref": "https://extensions.shopifycdn.com/shopifycloud/schemas/v1/application/ticket.json",
-    "type": "object",
-    "properties": {
-      "title": {
-        "type": "string",
-        "description": "Title/summary of the ticket.",
-        "minLength": 1,
-        "maxLength": 200
-      },
-      "description": {
-        "type": "string",
-        "description": "Detailed description of the ticket."
-      },
-      "status": {
-        "type": "string",
-        "description": "Status of the ticket.",
-        "enum": [
-          "open",
-          "in_progress",
-          "closed"
-        ]
-      }
-    }
+    "type": "object"
   }
 }

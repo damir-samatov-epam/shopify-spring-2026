@@ -4,6 +4,8 @@ Use these intents when the merchant wants to edit a support ticket
 (also referred to as a todo or task). The merchant will be navigated directly
 to the ticket form in the app.
 
+- **Search for a ticket** — use search_tickets tool to get the correct ticket info
+
 - **Edit a ticket** — invoke the `application/ticket` **edit** intent with the
   ticket's `id` as the intent `value` when the merchant wants to change an
   existing ticket's title, description, or status.
