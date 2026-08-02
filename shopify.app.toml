@@ -26,17 +26,16 @@ scopes = "write_products,write_orders"
 redirect_urls = ["https://example.com/api/auth"]
 
 # METAOBJECTS
-[metaobjects.app.example]
-name = "APP METAOBJECT"
-description = "An example metaobject definition"
+[metaobjects.app.limit]
+name = "Max count metaobject"
 
-[metaobjects.app.example.access]
+[metaobjects.app.limit.access]
 admin = "merchant_read_write"
 storefront = "public_read"
 
-[metaobjects.app.example.fields.title]
-name = "Title"
-type = "single_line_text_field"
+[metaobjects.app.limit.fields.max_count]
+name = "Max product count"
+type = "number_integer"
 required = true
 
 # SIDEKICK

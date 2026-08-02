@@ -1,0 +1,25 @@
+query CartValidationsGenerateRunInput {
+  cart {
+    lines {
+      quantity
+      merchandise {
+        __typename
+        ... on ProductVariant {
+          id
+          product {
+            title
+          }
+        }
+      }
+    }
+  }
+  shop {
+    metaobject(handle: { type: "$app:limit", handle: "cart-line-limit" }) {
+      handle
+      maxCount: field(key: "max_count") {
+        jsonValue
+      }
+    }
+  }
+}
+
