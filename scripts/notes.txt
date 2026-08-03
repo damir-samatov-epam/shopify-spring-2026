@@ -1,0 +1,5 @@
+1. shopify app execute --query '{ shop { id email primaryDomain { url host } } }'
+
+2. codemie-claude plugin install shopify-ai-toolkit@claude-plugins-official
+
+3. Explain the difference between Sidekick action link extension vs Sidekick action extension
